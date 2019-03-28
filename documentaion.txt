@@ -1,0 +1,17 @@
+Documentation-
+This project requires python 3, Django, MongoDB and "djongo" to run. We chose MongoDB over traditional RDBMS system as the TSV file had over 3lakh+ data which cannot be handled by traditional RDBMS Systems.
+"Djongo" is a 3rd party application which enables us to connect MongoDB with Django. "Djongo" can be installed using pip:
+
+pip install Djongo
+
+The name of the MongoDB database must be autocomplete or the name of the database can be changed in the settings.py file. First, the data from the TSV must be uploaded to the database. This can be done by navigating  to the following URL:
+/search/addData
+It will take a few minutes and the page must not be reloaded.  
+
+The front end URL is :
+/SearchView/
+
+The following URL returns a JSON array of the most relevant words.
+/search/?word=
+
+
