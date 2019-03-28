@@ -1,0 +1,59 @@
+{% extends 'Header/header.html' %}
+
+{% block content %}
+<div class="container">
+    <br>
+    <div class="well">
+        <h4><strong>Search Word</strong></h4>
+        <p>Please enter the keywords in the input field , the webpage will make an Ajax GET request to the /search/?word=
+        and dynamically show the values. The Ajax request takes a little bit of time since the database consists of 3Lakh +
+            informations. The use of Mongo Db allows us to process such huge data. If you change the word in the input
+        please wait for the </p>
+    </div>
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control" id="input">
+        </div>
+    </form>
+    <ul id="autocomplete" class="list-group">
+        <li class="list-group-item" id="loading" style="display:none;"><strong>LOADING...</strong></li>
+    </ul>
+</div>
+<script>
+    $(document).ready(function(event)
+    {
+        $(document).ajaxStart(function (){
+            $("#loading").show();
+                });
+        $(document).ajaxComplete(function () {
+                $("#loading").hide();
+                });
+        $("#input").keyup(function()
+        {
+            keyword = $("#input").val();
+            $.ajax({
+            type: "GET",
+            url: "{% url 'search_keyword:search' %}",
+            data: {'word':keyword},
+            data_type: 'json',
+            success: function(response)
+            {
+                data = response['context'];
+                var i = 0;
+                var html = ""
+                for (i = 0; i < data.length; i++)
+                {
+                    html = html + "<li class='list-group-item'>" + data[i] + "</li>";
+                }
+                $("#autocomplete").html(html);
+            },
+            error: function(rs, e)
+            {
+                consol.log(rs.responseText);
+            }
+            });
+        });
+    });
+
+</script>
+{% endblock %}
